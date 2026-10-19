@@ -10,5 +10,6 @@ public interface ViagemRepository extends JpaRepository<Viagem, Long> {
     Optional<Viagem>
     findFirstByDataHoraChegadaIsNotNullOrderByDataHoraChegadaDesc();
 
-
+    Optional<Viagem>
+    findFirstByKmFinalIsNull();
 }
