@@ -38,4 +38,23 @@ public class ViagemService {
 
         return viagemRepository.save(viagem);
     }
+
+    public Viagem finalizarViagem(Integer kmFinal) {
+        Optional<Viagem> viagemAberta = viagemRepository.findFirstByKmFinalIsNull();
+
+        if (viagemAberta.isEmpty()) {
+            throw new IllegalStateException("Não existe viagem em andamento para finalizar.");
+        }
+
+        Viagem viagem = viagemAberta.get();
+
+        if (kmFinal < viagem.getKmInicial()) {
+            throw new IllegalArgumentException("O KM final não pode ser menor que o KM inicial.");
+        }
+
+        viagem.setKmFinal(kmFinal);
+        viagem.setDataHoraChegada(LocalDateTime.now());
+
+        return viagemRepository.save(viagem);
+    }
 }
