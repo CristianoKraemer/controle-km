@@ -5,6 +5,7 @@ import br.com.cristianokraemer.controle_km.model.Viagem;
 import br.com.cristianokraemer.controle_km.repository.ViagemRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -22,6 +23,19 @@ public class ViagemService {
         if (viagemAberta.isPresent()) {
             throw new IllegalStateException("Existe uma viagem em andamento. Informe o KM para finalizá-la antes de iniciar uma nova.");
         }
-        return null;
+
+        Optional<Viagem> ultimaViagem = viagemRepository.findFirstByDataHoraChegadaIsNotNullOrderByDataHoraChegadaDesc();
+
+        Integer kmInicial = 0;
+        if (ultimaViagem.isPresent()) {
+            kmInicial = ultimaViagem.get().getKmFinal();
+        }
+
+        Viagem viagem = new Viagem();
+        viagem.setMotorista(motorista);
+        viagem.setDataHoraSaida(LocalDateTime.now());
+        viagem.setKmInicial(kmInicial);
+
+        return viagemRepository.save(viagem);
     }
 }
