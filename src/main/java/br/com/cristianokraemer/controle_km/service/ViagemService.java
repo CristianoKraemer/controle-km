@@ -57,4 +57,8 @@ public class ViagemService {
 
         return viagemRepository.save(viagem);
     }
+
+    public Optional<Viagem> buscarViagemEmAndamento() {
+        return viagemRepository.findFirstByKmFinalIsNull();
+    }
 }
