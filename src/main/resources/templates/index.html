@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Controle de KM</title>
+</head>
+<body>
+<h1>Controle de KM</h1>
+
+<div th:if="${viagemEmAndamento == null}">
+    <p>Nenhuma viagem em andamento.</p>
+    <form method="post" action="/iniciar">
+        <label>Motorista:</label>
+        <select name="motoristaId">
+            <option th:each="m : ${motoristas}" th:value="${m.id}" th:text="${m.nome}"></option>
+        </select>
+        <button type="submit">Iniciar viagem</button>
+    </form>
+</div>
+
+<div th:if="${viagemEmAndamento != null}">
+    <p>Viagem em andamento de <span th:text="${viagemEmAndamento.motorista.nome}"></span></p>
+    <p>KM inicial: <span th:text="${viagemEmAndamento.kmInicial}"></span></p>
+    <form method="post" action="/finalizar">
+        <label>KM final:</label>
+        <input type="number" name="kmFinal" required>
+        <button type="submit">Finalizar viagem</button>
+    </form>
+</div>
+</body>
+</html>
